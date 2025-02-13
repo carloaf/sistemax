@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: sistemax-app
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/apache/ssl:/etc/apache2/ssl
+    ports:
+      - "8000:80"
+      - "443:443"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    depends_on:
+      - db
+    networks:
+      - sistemax-network
+
+  db:
+    image: postgres:17
+    container_name: sistemax-postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - /srv/db/laravel:/var/lib/postgresql/data
+    networks:
+      - sistemax-network
+    environment:
+      POSTGRES_DB: sistemax
+      POSTGRES_USER: thanus
+      POSTGRES_PASSWORD: 123456
+
+  adminer:
+    image: adminer
+    container_name: sistemax-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - sistemax-network
+
+networks:
+  sistemax-network:
+    driver: bridge
