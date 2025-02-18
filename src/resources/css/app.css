@@ -1,3 +1,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilos personalizados */
+
+/* Sidebar */
+.sidebar {
+    width: 16rem; /* Largura do sidebar */
+    height: 100vh; /* Altura total da tela */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    background-color: #ffffff; /* Cor de fundo do sidebar */
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1); /* Sombra à direita */
+}
+
+/* Conteúdo Principal */
+.main-content {
+    margin-left: 16rem; /* Largura do sidebar */
+    transition: margin-left 0.3s ease;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 16rem; /* Largura do sidebar */
+    z-index: 30;
+    height: 4rem; /* Altura do header */
+    background-color: #ffffff; /* Cor de fundo do header */
+    border-bottom: 1px solid #e5e7eb; /* Borda inferior */
+    padding: 0 1rem; /* Espaçamento interno */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Estilos para Mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Esconde o sidebar */
+    }
+
+    .main-content {
+        margin-left: 0; /* Remove o margin-left */
+    }
+
+    .header {
+        left: 0; /* Header ocupa toda a largura */
+    }
+
+    /* Classe para abrir o sidebar */
+    .sidebar-open .sidebar {
+        transform: translateX(0); /* Mostra o sidebar */
+    }
+
+    .sidebar-open .main-content {
+        margin-left: 16rem; /* Desloca o conteúdo */
+    }
+}
+
+/* Estilo para submenus */
+.submenu ul {
+    transition: all 0.3s ease;
+}
+
+/* Ícones */
+.fas, .far {
+    width: 1.25rem;
+    text-align: center;
+}
+
+/* Animação do ícone de seta */
+.rotate-90 {
+    transform: rotate(90deg);
+}
+
+/* Links ativos no sidebar */
+.sidebar a.active {
+    background-color: #f3f4f6; /* Cor de fundo para link ativo */
+    font-weight: 500; /* Peso da fonte */
+}
+
+/* Espaçamento interno para subitens */
+.sidebar .submenu ul {
+    padding-left: 1rem; /* Recuo para subitens */
+}
+
+/* Estilo para o botão de toggle do sidebar (mobile) */
+.sidebar-toggle {
+    display: none; /* Esconde por padrão */
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: block; /* Mostra apenas em mobile */
+    }
+}

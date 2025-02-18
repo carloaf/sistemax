@@ -3,6 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+/** set side bar active */
+function set_active($route) {
+    if( is_array($route) ) {
+        return in_array(Request::path(), $route) ? 'active' : '';
+    }
+    return Request::path() == $route ? 'active' : '';
+}
+
 Route::get('/', function () {
     return view('welcome');
 });
