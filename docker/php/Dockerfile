@@ -8,8 +8,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     vim \
     openssl \
-    && docker-php-ext-install pdo pdo_pgsql zip \
-    && a2enmod ssl rewrite
+    && docker-php-ext-install pdo pdo_pgsql zip
 
 # Instalar Node.js e npm
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
@@ -31,7 +30,9 @@ COPY docker/apache/ssl/server.crt /etc/apache2/ssl/server.crt
 COPY docker/apache/ssl/server.key /etc/apache2/ssl/server.key
 
 # Habilitar site SSL
-RUN a2ensite 000-default.conf
+RUN a2enmod rewrite ssl
+# 000-default.conf  
+# a2ensite
 
 # Ajustar permissões do diretório de trabalho
 RUN chown -R www-data:www-data /var/www/html \
