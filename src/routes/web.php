@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,6 +16,8 @@ function set_active($route) {
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
