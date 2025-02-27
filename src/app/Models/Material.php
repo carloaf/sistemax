@@ -21,4 +21,8 @@ class Material extends Model
     {
         return $this->hasMany(Movement::class);
     }
+
+    public function documentItems() {
+        return $this->hasMany(DocumentItem::class);
+    }
 }

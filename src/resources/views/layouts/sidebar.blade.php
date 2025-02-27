@@ -16,8 +16,8 @@
             </a>
         </li>
 
-        <!-- Submenu Documentos -->
-        <li x-data="{ open: false }">
+        <!-- Submenu Documentos (Atualizado) -->
+        <li x-data="{ open: {{ request()->routeIs('documentos.*') ? 'true' : 'false' }} }">
             <a @click="open = !open" class="flex items-center justify-between px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer">
                 <span class="flex items-center">
                     <i class="fas fa-folder mr-2"></i>
@@ -27,9 +27,16 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 </span>
             </a>
-            <ul x-show="open" class="pl-8 mt-1 space-y-1">
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Fornecimento</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Entrada</a></li>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1" x-collapse>
+                <li>
+                    <a href="{{ route('documentos.entrada') }}" 
+                    class="submenu block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->routeIs('documentos.entrada') ? 'bg-gray-100 text-gray-900' : 'text-gray-600' }}">
+                        Entrada
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Fornecimento</a>
+                </li>
             </ul>
         </li>
 
@@ -44,10 +51,10 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 </span>
             </a>
-            <ul x-show="open" class="pl-8 mt-1 space-y-1">
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">All Contas</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Edit Conta</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Add Contas</a></li>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1">
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">All Contas</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Edit Conta</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Add Contas</a></li>
             </ul>
         </li>
 
@@ -62,9 +69,9 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 </span>
             </a>
-            <ul x-show="open" class="pl-8 mt-1 space-y-1">
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Config List</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Config Add</a></li>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1">
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Config List</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Config Add</a></li>
             </ul>
         </li>
 
@@ -79,12 +86,12 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 </span>
             </a>
-            <ul x-show="open" class="pl-8 mt-1 space-y-1">
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Invoices</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Payments</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Expenses</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Taxes</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Provident Fund</a></li>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1">
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Invoices</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Payments</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Expenses</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Taxes</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Provident Fund</a></li>
             </ul>
         </li>
 
@@ -99,10 +106,10 @@
                     <i class="fas fa-chevron-right text-sm"></i>
                 </span>
             </a>
-            <ul x-show="open" class="pl-8 mt-1 space-y-1">
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Add User</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">All User</a></li>
-                <li><a href="#" class="block px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Edit User</a></li>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1">
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Add User</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">All User</a></li>
+                <li><a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Edit User</a></li>
             </ul>
         </li>
     </ul>

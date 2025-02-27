@@ -1,65 +1,65 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Dashboard - Controle de Estoque')
 
 @section('content')
 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Cabeçalho do Dashboard -->
+    <!-- Cabeçalho -->
     <div class="mb-8">
-        <h1 class="text-2xl font-bold text-gray-900">Bem-vindo, {{ Auth::user()->name }}!</h1>
-        <p class="text-gray-600 mt-2">Aqui está um resumo das atividades do sistema</p>
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p class="text-gray-600 mt-2">Resumo do controle de estoque</p>
     </div>
 
-    <!-- Cards de Estatísticas -->
+    <!-- Cards de Métricas -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Card 1 -->
+        <!-- Total de Materiais -->
         <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
+            <div class="flex items-center gap-4">
                 <div class="p-3 bg-blue-100 rounded-full mr-4">
-                    <i class="fas fa-file-invoice-dollar text-blue-600 text-xl"></i>
+                    <i class="fas fa-boxes text-blue-600 text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500">Documentos Totais</p>
-                    <p class="text-2xl font-bold">1,234</p>
+                    <p class="text-gray-500">Total de Materiais</p>
+                    <p class="text-2xl font-bold">{{ $totalMaterials }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card 2 -->
+        <!-- Valor Total do Estoque -->
         <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
+            <div class="flex items-center gap-4">
                 <div class="p-3 bg-green-100 rounded-full mr-4">
-                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    <i class="fas fa-dollar-sign text-green-600 text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500">Concluídos</p>
-                    <p class="text-2xl font-bold">890</p>
+                    <p class="text-gray-500">Valor Total do Estoque</p>
+                    <p class="text-2xl font-bold">R$ {{ number_format($totalStockValue, 2, ',', '.') }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card 3 -->
+        <!-- Materiais abaixo do estoque minimo -->
         <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="p-3 bg-yellow-100 rounded-full mr-4">
-                    <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+        <div class="flex items-center gap-4">
+                <div class="p-3 bg-red-100 rounded-full mr-4">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500">Pendentes</p>
-                    <p class="text-2xl font-bold">284</p>
+                    <p class="text-gray-500">Materiais abaixo do estoque minimo</p>
+                    <p class="text-2xl font-bold">{{ $lowStockMaterials }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card 4 -->
+        <!-- Movimentações Recentes -->
         <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
+        <div class="flex items-center gap-4">
                 <div class="p-3 bg-purple-100 rounded-full mr-4">
-                    <i class="fas fa-users text-purple-600 text-xl"></i>
+                    <i class="fas fa-exchange-alt text-purple-600 text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-gray-500">Usuários Ativos</p>
-                    <p class="text-2xl font-bold">56</p>
+                    <p class="text-gray-500">Movimentações (7 dias)</p>
+                    <p class="text-2xl font-bold">{{ $movementData->sum() }}</p>
                 </div>
             </div>
         </div>
@@ -67,50 +67,76 @@
 
     <!-- Gráfico e Tabela -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Gráfico -->
+        <!-- Gráfico de Movimentações -->
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold mb-4">Atividade Recente</h3>
+            <h3 class="text-lg font-semibold mb-4">Movimentações Recentes</h3>
             <div class="h-64">
-                <!-- Espaço para gráfico (ex: Chart.js ou Livewire) -->
-                <div class="bg-gray-50 rounded-lg w-full h-full flex items-center justify-center text-gray-400">
-                    Área do Gráfico
-                </div>
+                <canvas id="movementChart"></canvas>
             </div>
         </div>
 
-        <!-- Últimas Atividades -->
+        <!-- Últimas Movimentações -->
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold mb-4">Últimas Atividades</h3>
+            <h3 class="text-lg font-semibold mb-4">Últimas Movimentações</h3>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
                         <tr class="text-left text-gray-500 border-b">
-                            <th class="pb-3">Usuário</th>
-                            <th class="pb-3">Ação</th>
+                            <th class="pb-3">Material</th>
+                            <th class="pb-3">Tipo</th>
+                            <th class="pb-3">Quantidade</th>
                             <th class="pb-3">Data</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Exemplo de dados -->
+                        @foreach ($latestMovements as $movement)
                         <tr class="border-b">
-                            <td class="py-3">João Silva</td>
-                            <td>Upload de documento</td>
-                            <td>10/08/2023</td>
+                            <td class="py-3">{{ $movement->material->name }}</td>
+                            <td class="py-3">
+                                <span class="px-2 py-1 rounded-full text-sm 
+                                    {{ $movement->type === 'entry' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $movement->type === 'entry' ? 'Entrada' : 'Saída' }}
+                                </span>
+                            </td>
+                            <td class="py-3">{{ $movement->quantity }}</td>
+                            <td class="py-3">{{ $movement->created_at->format('d/m/Y H:i') }}</td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-3">Maria Souza</td>
-                            <td>Atualização de conta</td>
-                            <td>09/08/2023</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3">Carlos Oliveira</td>
-                            <td>Novo fornecedor</td>
-                            <td>08/08/2023</td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Script para o gráfico (Chart.js) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('movementChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($movementLabels) !!},
+            datasets: [{
+                label: 'Movimentações por Dia',
+                data: {!! json_encode($movementData) !!},
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: '#3b82f6',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
 @endsection

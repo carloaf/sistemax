@@ -30,8 +30,17 @@
             box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1); /* Sombra à direita */
         }
 
+        /* Espaçamento para o conteúdo abaixo do header */
+        .main-content {
+            margin-top: 4rem; /* Altura do header */
+        }
+        
         .sidebar.collapsed {
             width: 4rem; /* Largura reduzida para exibir apenas ícones */
+        }
+
+        .submenu {
+            padding-left: 35px; /* Padding para submenus */
         }
 
         .sidebar.collapsed .sidebar-text {
@@ -98,7 +107,7 @@
     </aside>
 
     <!-- Conteúdo Principal -->
-    <div class="main-content" id="main-content">
+    <div class="main-content mt-16" id="main-content">
         <!-- Header -->
         <header class="header" id="header">
             <!-- Botão de toggle para recolher/expandir o sidebar -->

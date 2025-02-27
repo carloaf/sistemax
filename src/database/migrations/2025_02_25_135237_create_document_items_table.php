@@ -4,16 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+return new class extends Migration {
+    public function up()
     {
-        Schema::create('document_material', function (Blueprint $table) {
+        Schema::create('document_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('document_id')->constrained();
+            $table->foreignId('document_id')->constrained()->onDelete('cascade');
             $table->foreignId('material_id')->constrained();
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2);
@@ -21,11 +17,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('movements');
+        Schema::dropIfExists('document_items');
     }
 };
