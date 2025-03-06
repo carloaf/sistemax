@@ -3,7 +3,7 @@
 @section('title', 'Entrada de Documento')
 
 @section('content')
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white shadow-lg rounded-xl p-6">
         <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-3">Registrar Entrada</h1>
 
@@ -22,7 +22,7 @@
                 <div class="flex-1">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Número da Nota</label>
                     <input type="text" name="document_number" required
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Ex: NF-123456">
                 </div>
 
                 <!-- Data de Emissão -->

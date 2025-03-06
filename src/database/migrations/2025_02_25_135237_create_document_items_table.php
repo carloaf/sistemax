@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->foreignId('material_id')->constrained();
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2);
+            $table->primary(['document_id', 'material_id']);
             $table->timestamps();
         });
     }

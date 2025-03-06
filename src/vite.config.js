@@ -6,16 +6,21 @@ import path from 'path'; // Import the 'path' module
 
 export default defineConfig({
     server: {
-        https: {
-            key: fs.readFileSync(path.resolve(__dirname, '/etc/apache2/ssl/server.key')),
-            cert: fs.readFileSync(path.resolve(__dirname, '/etc/apache2/ssl/server.crt')),
-        },
         host: '0.0.0.0',
-        cors: {
-        origin: true,  // Permite todas origens
-        credentials: true
+        port: 5173,
+        strictPort: true,
+        https: {
+            key: fs.readFileSync(path.resolve(__dirname, '/etc/apache2/ssl/localhost-key.pem')),
+            cert: fs.readFileSync(path.resolve(__dirname, '/etc/apache2/ssl/localhost.pem')),
         },
-        strictPort: true
+        cors: true,
+        hmr: {
+            host: '172.22.0.4', // Atualize com o IP do seu container se necessário
+            protocol: 'wss', // WebSocket seguro
+        }
+    },
+    define: {
+        'process.env': {},
     },
     plugins: [
         laravel({

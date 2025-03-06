@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\RelatorioController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,6 +28,16 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::prefix('documentos')->group(function () {
     Route::get('/entrada', [DocumentoController::class, 'create'])->name('documentos.entrada');
     Route::post('/entrada', [DocumentoController::class, 'store'])->name('documentos.entrada.store');
+});
+Route::get('/documentos/fornecimento', [DocumentoController::class, 'fornecimento'])
+    ->name('documentos.fornecimento');
+Route::post('/documentos/fornecimento', [DocumentoController::class, 'storeFornecimento'])
+    ->name('documentos.fornecimento.store');
+
+Route::prefix('relatorios')->group(function () {
+    Route::get('/entrada', [RelatorioController::class, 'entrada'])->name('relatorios.entrada');
+    Route::get('/movimentacoes', [RelatorioController::class, 'movimentacoes'])->name('relatorios.movimentacoes');
+    Route::get('/estoque', [RelatorioController::class, 'estoque'])->name('relatorios.estoque');
 });
 
 Route::middleware('auth')->group(function () {

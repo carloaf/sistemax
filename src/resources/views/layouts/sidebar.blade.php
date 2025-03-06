@@ -10,7 +10,7 @@
     <ul class="space-y-2">
         <!-- Dashboard -->
         <li>
-            <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-green-700 rounded-lg hover:bg-green-100 {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">
+            <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">
                 <i class="fas fa-tachometer-alt mr-2"></i>
                 <span class="sidebar-text">Dashboard</span>
             </a>
@@ -35,7 +35,43 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100">Fornecimento</a>
+                    <a href="{{ route('documentos.fornecimento') }}" 
+                    class="submenu block px-3 py-2 rounded-lg hover:bg-gray-100 {{ request()->routeIs('documentos.fornecimento') ? 'bg-gray-100 text-gray-900' : 'text-gray-600' }}">
+                        Fornecimento
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Menu relatorios -->
+        <li x-data="{ open: {{ request()->routeIs('relatorios.*') ? 'true' : 'false' }} }">
+            <a @click="open = !open" class="flex items-center justify-between px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-100 cursor-pointer">
+                <span class="flex items-center">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    <span class="sidebar-text">Relatórios</span>
+                </span>
+                <span :class="open ? 'rotate-90' : ''" class="transform transition-transform duration-200">
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </span>
+            </a>
+            <ul x-show="open" class="pl-3 mt-1 space-y-1">
+                <li>
+                    <a href="{{ route('relatorios.entrada') }}" 
+                    class="submenu block px-3 py-2 rounded-lg hover:bg-gray-300 {{ request()->routeIs('relatorios.entrada') ? 'bg-gray-100 text-gray-900' : 'text-gray-600' }}">
+                        Entrada de Materiais
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('relatorios.movimentacoes') }}" 
+                    class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100 {{ request()->routeIs('relatorios.movimentacoes') ? 'bg-gray-100' : '' }}">
+                        Movimentações
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('relatorios.estoque') }}" 
+                    class="submenu block px-3 py-2 text-gray-600 rounded-lg hover:bg-gray-100 {{ request()->routeIs('relatorios.estoque') ? 'bg-gray-100' : '' }}">
+                        Estoque Atual
+                    </a>
                 </li>
             </ul>
         </li>

@@ -12,11 +12,12 @@ class MaterialFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'code' => 'MAT-' . str_pad($this->faker->unique()->numberBetween(1, 1000), 6, '0', STR_PAD_LEFT),
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence,
-            'quantity' => $this->faker->numberBetween(0, 100),
-            'minimum_stock' => $this->faker->numberBetween(10, 20),
-            'unit_price' => $this->faker->randomFloat(2, 1, 100),
+            'unit' => $this->faker->randomElement(['UN', 'KG', 'MT', 'CX']),
+            'quantity' => $this->faker->numberBetween(100, 1000),
+            'average_unit_price' => $this->faker->randomFloat(2, 5, 500)
         ];
     }
 }

@@ -4,23 +4,28 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     container_name: sistemax-app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+      - "443:443"  # Alterado de "443:443"
+      - "5173:5173" # Porta do Vite
     volumes:
       - ./src:/var/www/html
       - ./docker/apache/ssl:/etc/apache2/ssl
-    ports:
-      - "8000:80"
-      - "443:443"
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
+      - APP_URL=https://localhost
     depends_on:
       - db
     networks:
-      - sistemax-network
+      sistemax-network:
+        ipv4_address: 172.22.0.4    # IP fixo para o container
 
   db:
     image: postgres:17
     container_name: sistemax-postgres
+    shm_size: 256mb
     ports:
       - "5434:5432"
     volumes:
@@ -43,3 +48,6 @@ services:
 networks:
   sistemax-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16

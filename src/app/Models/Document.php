@@ -12,11 +12,18 @@ class Document extends Model
     protected $fillable = [
         'document_number',
         'issue_date',
+        'type',
         'supplier',
+        'recipient',
         'comments'
     ];
 
     public function items()
+    {
+        return $this->hasMany(DocumentItem::class);
+    }
+
+    public function documentItems()
     {
         return $this->hasMany(DocumentItem::class);
     }

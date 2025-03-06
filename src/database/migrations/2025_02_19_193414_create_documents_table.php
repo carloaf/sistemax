@@ -9,9 +9,11 @@ return new class extends Migration {
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('document_number')->unique(); // Número da nota fiscal
+            $table->string('document_number')->unique();
             $table->date('issue_date');
-            $table->string('supplier'); // Fornecedor
+            $table->enum('type', ['entry', 'exit']);
+            $table->string('supplier')->nullable();
+            $table->string('recipient')->nullable();
             $table->text('comments')->nullable();
             $table->timestamps();
         });

@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->nullable()->unique()->after('id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('unit', 10)->default('UN')->after('description');
             $table->integer('quantity');
-            $table->integer('minimum_stock');
-            $table->decimal('unit_price', 10, 2);
+            $table->decimal('average_unit_price', 10, 2)->default(0)->after('quantity');
+            $table->integer('minimum_stock')->default(0);
+            $table->decimal('unit_price', 10, 2)->default(2);
             $table->timestamps();
         });
     }

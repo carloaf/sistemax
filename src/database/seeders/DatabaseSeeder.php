@@ -1,28 +1,38 @@
 <?php
 
-namespace Database\Seeders;
-
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Carl',
-        //     'email' => 'teste@gmail.com',
+        // this->call([
+        //     SampleDataSeeder::class
         // ]);
 
-        $this->call([
-            MaterialSeeder::class,
-            MovementSeeder::class,
-        ]);
+        // Criar 50 materiais
+        \App\Models\Material::factory(50)->create();
+
+        // Criar 20 documentos com itens e movimentações
+        \App\Models\Document::factory(20)
+            ->hasDocumentItems(3) // 3 itens por documento
+            ->create()
+            ->each(function ($document) {
+                // Criar movimentação para cada item
+                foreach ($document->items as $item) {
+                    \App\Models\Movement::create([
+                        'material_id' => $item->material_id,
+                        'document_id' => $document->id,
+                        'type' => 'entry',
+                        'quantity' => $item->quantity,
+                        'observation' => 'Entrada via documento ' . $document->document_number
+                    ]);
+
+                    // Atualizar estoque
+                    $material = \App\Models\Material::find($item->material_id);
+                    $material->quantity += $item->quantity;
+                    $material->save();
+                }
+            });
     }
 }

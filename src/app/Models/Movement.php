@@ -20,4 +20,9 @@ class Movement extends Model
     {
         return $this->belongsTo(Material::class);
     }
+
+    public function document()
+    {
+        return $this->belongsTo(Document::class, 'document_id'); // Nome correto da relação
+    }
 }
