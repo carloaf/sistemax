@@ -5,6 +5,11 @@ services:
       dockerfile: docker/php/Dockerfile
     container_name: sistemax-app
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
     ports:
       - "8000:80"
       - "443:443"  # Alterado de "443:443"

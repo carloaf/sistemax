@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Document;
 use App\Models\Movement;
 use App\Models\Material;
@@ -21,7 +22,11 @@ class RelatorioController extends Controller
             ->orderBy('issue_date', 'desc')
             ->paginate(15);
 
-        return view('relatorios.entrada', compact('entradas'));
+            return view('relatorios.entrada', [
+                'entradas' => $entradas,
+                'dataInicio' => $request->data_inicio,
+                'dataFim' => $request->data_fim
+            ]);
     }
 
     public function movimentacoes(Request $request)
@@ -61,7 +66,54 @@ class RelatorioController extends Controller
         return view('relatorios.estoque', [
             'materiais' => $materiais,
             'sort' => $sort,
-            'direction' => $direction
+            'direction' => $direction,
+            'search' => $search // Adicione esta linha
         ]);
+    }
+
+    public function movimentacoesMaterial(Material $material, Request $request)
+    {
+        $movimentacoes = $material->movements()
+            ->with(['document'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('relatorios.movimentacoes-material', [
+            'material' => $material,
+            'movimentacoes' => $movimentacoes
+        ]);
+    }
+
+    public function entradaPdf(Request $request)
+    {
+        try {
+            $request->validate([
+                'data_inicio' => 'required|date',
+                'data_fim' => 'required|date|after_or_equal:data_inicio'
+            ]);
+
+            $entradas = Document::with(['items.material'])
+                ->whereBetween('issue_date', [
+                    $request->data_inicio, 
+                    $request->data_fim
+                ])
+                ->orderBy('issue_date', 'desc')
+                ->get();
+
+            // Debug: Verificar dados
+            logger()->info('Documentos encontrados: ' . $entradas->count());
+
+            $pdf = Pdf::loadView('relatorios.pdf.entrada', [
+                'entradas' => $entradas,
+                'dataInicio' => $request->data_inicio,
+                'dataFim' => $request->data_fim
+            ])->setPaper('a4', 'landscape');
+
+            return $pdf->stream('relatorio-entrada.pdf');
+
+        } catch (\Exception $e) {
+            logger()->error('Erro ao gerar PDF: ' . $e->getMessage());
+            return back()->withErrors('Erro ao gerar PDF: ' . $e->getMessage());
+        }
     }
 }

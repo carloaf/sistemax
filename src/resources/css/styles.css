@@ -112,4 +112,27 @@
     .table-report tr:nth-child(even) {
         @apply bg-gray-50;
     }
+
+    /* Estilos para movimentacoes material */
+    .truncate {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .truncate:hover {
+        white-space: normal;
+        overflow: visible;
+    }
+
+    a.material-link {
+        color: #2563eb !important; /* blue-600 */
+        transition: color 0.2s;
+    }
+    
+    a.material-link:hover {
+        color: #1e40af !important; /* blue-800 */
+        text-decoration: underline;
+    }
 }

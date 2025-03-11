@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Document;
@@ -38,7 +39,8 @@ class DocumentoController extends Controller
             'document_number' => $validated['document_number'],
             'issue_date' => $validated['issue_date'],
             'supplier' => $validated['supplier'],
-            'comments' => $request->input('comments', '') // Valor padrão para evitar null
+            'comments' => $request->input('comments', ''), // Valor padrão para evitar null
+            'type' => 'entry' // Adicionado para evitar null
         ]);
 
         // Processar Itens
@@ -161,4 +163,14 @@ class DocumentoController extends Controller
         }
     }
 
+    public function gerarPdf(Document $document)
+    {
+        $document->load('items.material'); // Carrega os relacionamentos
+        
+        $pdf = PDF::loadView('documentos.pdf.entrada', compact('document'))
+                ->setPaper('a4', 'portrait')
+                ->setOption('isRemoteEnabled', true);
+        
+        return $pdf->stream("entrada-{$document->document_number}.pdf");
+    }
 }

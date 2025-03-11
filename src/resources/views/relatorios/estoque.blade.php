@@ -78,10 +78,20 @@
                     @forelse($materiais as $material)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $material->code ?? 'N/A' }}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-col">
+                                <a href="{{ route('relatorios.estoque.movimentacoes', $material) }}" 
+                                class="text-blue-600 hover:text-blue-800 hover:underline font-medium mb-1">
+                                    {{ $material->name }}
+                                </a>
+                                <!-- <span class="text-sm text-gray-500">{{ $material->code }}</span> -->
+                                <span class="text-sm text-gray-500">{{ $material->description }}</span>
+                            </div>
+                        </td>
+                        <!-- <td class="px-6 py-4">
                             <div class="font-medium text-gray-900">{{ $material->name }}</div>
                             <div class="text-sm text-gray-500">{{ $material->description }}</div>
-                        </td>
+                        </td> -->
                         <td class="px-6 py-4 whitespace-nowrap">{{ $material->unit }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 py-1 rounded-full 
@@ -110,7 +120,7 @@
 
         <!-- Paginação e Resumo -->
         <div class="mt-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
+            <div class="mb-4 md:mb-0 pl-5">
                 {{ $materiais->links() }}
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
