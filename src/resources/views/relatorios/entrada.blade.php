@@ -19,9 +19,26 @@
                     <input type="date" name="data_fim" class="w-full px-3 py-2 border rounded-lg">
                 </div>
                 <div class="flex items-end">
-                    <button type="submit" class="bg-blue-500 text-gray-500 px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                         Filtrar
                     </button>
+                </div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Registros de Entrada</h3>
+                    <div class="flex gap-2">
+                        {{-- resources/views/relatorios/entrada.blade.php --}}
+                        <form action="{{ route('relatorios.entrada.pdf') }}" method="GET" target="_blank" id="pdfForm">
+                            <input type="hidden" name="data_inicio" value="{{ request('data_inicio', now()->subMonth()->format('Y-m-d')) }}">
+                            <input type="hidden" name="data_fim" value="{{ request('data_fim', now()->format('Y-m-d')) }}">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                                <i class="fas fa-file-pdf mr-2"></i>Exportar PDF
+                            </button>
+                        </form>
+                        <button onclick="window.print()" 
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+                            <i class="fas fa-print mr-2"></i>Imprimir
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -59,6 +76,16 @@
                 </tbody>
             </table>
         </div>
+        {{-- resources/views/partials/errors.blade.php --}}
+        @if($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <!-- Paginação -->
         <div class="mt-6">

@@ -49,4 +49,10 @@ class Material extends Model
             ->oldest('created_at')
             ->value('unit_price');
     }
+
+    // Rota para direcionar link detalhar estoque material
+    public function getRouteKeyName()
+    {
+        return 'id'; // Ou 'code' se quiser usar o código como identificador
+    }
 }
