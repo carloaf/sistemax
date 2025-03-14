@@ -10,6 +10,13 @@
         }
         h1 { text-align: center; }
         table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        body { 
+            font-family: DejaVu Sans, sans-serif; 
+            font-size: 9pt; /* Reduzido em 4 pontos */
+        }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 6px; }
         th { background-color: #f2f2f2; }
     </style>
@@ -17,7 +24,10 @@
 <body>
     <h1>Relatório de Entrada de Materiais</h1>
     <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
-    
+    <p>Período: {{ \Carbon\Carbon::parse($dataInicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($dataFim)->format('d/m/Y') }}</p>
+    <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>    
+    <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
+    <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
     @if($entradas->count() > 0)
     <table>
         <thead>
@@ -35,6 +45,7 @@
                 @foreach($doc->items as $item)
                 <tr>
                     <td>{{ $doc->document_number }}</td>
+                    <td>{{ $doc->issue_date->format('d/m/Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($doc->issue_date)->format('d/m/Y') }}</td>
                     <td>{{ $doc->supplier }}</td>
                     <td>{{ $item->material->name }}</td>

@@ -86,6 +86,36 @@ class RelatorioController extends Controller
 
     public function pdf(Request $request)
     {
+        try {
+            $request->validate([
+                'data_inicio' => 'required|date',
+                'data_fim' => 'required|date|after_or_equal:data_inicio'
+            ]);
+
+            $entradas = Document::with(['items.material'])
+                ->whereBetween('issue_date', [
+                    $request->data_inicio, 
+                    $request->data_fim
+                ])
+                ->orderBy('issue_date', 'desc')
+                ->get();
+
+            // Debug: Verificar dados
+            logger()->info('Documentos encontrados: ' . $entradas->count());
+
+            $pdf = Pdf::loadView('relatorios.pdf.entrada', [
+                'entradas' => $entradas,
+                'dataInicio' => $request->data_inicio,
+                'dataFim' => $request->data_fim
+            ])->setPaper('a4', 'landscape');
+
+            return $pdf->stream('relatorio-entrada.pdf');
+
+        } catch (\Exception $e) {
+            logger()->error('Erro ao gerar PDF: ' . $e->getMessage());
+            return back()->withErrors('Erro ao gerar PDF: ' . $e->getMessage());
+        }
+
         $data_inicio = $request->input('data_inicio', now()->subMonth()->format('Y-m-d'));
         $data_fim = $request->input('data_fim', now()->format('Y-m-d'));
     
@@ -96,5 +126,21 @@ class RelatorioController extends Controller
         $pdf = Pdf::loadView('relatorios.pdf.entrada', compact('entradas', 'data_inicio', 'data_fim'));
     
         return $pdf->download('relatorio_entrada-' . now()->format('d-m-y') . '.pdf');
+
+    }
+
+    public function pdf(Request $request)
+    {
+        $data_inicio = $request->input('data_inicio', now()->subMonth()->format('Y-m-d'));
+        $data_fim = $request->input('data_fim', now()->format('Y-m-d'));
+    
+        $entradas = Document::whereBetween('issue_date', [$data_inicio, $data_fim])
+            ->with('items.material')
+            ->get();
+    
+        $pdf = Pdf::loadView('relatorios.pdf.entrada', compact('entradas', 'data_inicio', 'data_fim'));
+    
+        return $pdf->download('relatorio_entrada-' . now()->format('d-m-y') . '.pdf');
+
     }
 }
