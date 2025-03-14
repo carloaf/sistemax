@@ -86,7 +86,6 @@ class RelatorioController extends Controller
 
     public function pdf(Request $request)
     {
-
         try {
             $request->validate([
                 'data_inicio' => 'required|date',
@@ -116,6 +115,18 @@ class RelatorioController extends Controller
             logger()->error('Erro ao gerar PDF: ' . $e->getMessage());
             return back()->withErrors('Erro ao gerar PDF: ' . $e->getMessage());
         }
+
+        $data_inicio = $request->input('data_inicio', now()->subMonth()->format('Y-m-d'));
+        $data_fim = $request->input('data_fim', now()->format('Y-m-d'));
+    
+        $entradas = Document::whereBetween('issue_date', [$data_inicio, $data_fim])
+            ->with('items.material')
+            ->get();
+    
+        $pdf = Pdf::loadView('relatorios.pdf.entrada', compact('entradas', 'data_inicio', 'data_fim'));
+    
+        return $pdf->download('relatorio_entrada-' . now()->format('d-m-y') . '.pdf');
+
     }
 
     public function pdf(Request $request)
