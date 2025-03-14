@@ -8,15 +8,15 @@
         <h1 class="text-2xl font-bold mb-6 border-b-2 border-blue-500 pb-2">Relatório de Entrada de Materiais</h1>
 
         <!-- Filtros -->
-        <form class="mb-6">
+        <form action="{{ route('relatorios.entrada') }}" method="GET" class="mb-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Data Início</label>
-                    <input type="date" name="data_inicio" class="w-full px-3 py-2 border rounded-lg">
+                    <input type="date" name="data_inicio" class="w-full px-3 py-2 border rounded-lg" value="{{ request('data_inicio') }}">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Data Fim</label>
-                    <input type="date" name="data_fim" class="w-full px-3 py-2 border rounded-lg">
+                    <input type="date" name="data_fim" class="w-full px-3 py-2 border rounded-lg" value="{{ request('data_fim') }}">
                 </div>
                 <div class="flex items-end">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
@@ -42,6 +42,23 @@
                 </div>
             </div>
         </form>
+        <!-- Botões Separados (Exportar PDF e Imprimir) -->
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Registros de Entrada</h3>
+            <div class="flex gap-2">
+                <form action="{{ route('relatorios.entrada.pdf') }}" method="GET" target="_blank">
+                    <input type="hidden" name="data_inicio" value="{{ request('data_inicio', now()->subMonth()->format('Y-m-d')) }}">
+                    <input type="hidden" name="data_fim" value="{{ request('data_fim', now()->format('Y-m-d')) }}">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                        <i class="fas fa-file-pdf mr-2"></i>Exportar PDF
+                    </button>
+                </form>
+                <button onclick="window.print()" 
+                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center">
+                    <i class="fas fa-print mr-2"></i>Imprimir
+                </button>
+            </div>
+        </div>
 
         <!-- Tabela -->
         <div class="overflow-x-auto">

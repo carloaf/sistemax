@@ -42,6 +42,7 @@ Route::prefix('relatorios')->group(function () {
         ->name('relatorios.estoque.movimentacoes');
     Route::get('/relatorios/entrada/pdf', [RelatorioController::class, 'entradaPdf'])
         ->name('relatorios.entrada.pdf');
+    Route::get('/entrada/pdf', [RelatorioController::class, 'pdf'])->name('relatorios.entrada.pdf');
 });
 
 Route::middleware('auth')->group(function () {
