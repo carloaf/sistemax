@@ -1,14 +1,14 @@
-<<<<<<< HEAD
-{{-- resources/views/relatorios/pdf/entrada.blade.php --}}
-=======
->>>>>>> 2a4d0c9660d74f1494d160c2e52e23d436f86930
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Relatório de Entrada</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; }
+        body { 
+            font-family: DejaVu Sans, sans-serif; 
+            font-size: 9pt; /* Reduzido em 4 pontos */
+        }
+        h1 { text-align: center; }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 8px; }
         body { 
@@ -25,6 +25,7 @@
     <h1>Relatório de Entrada de Materiais</h1>
     <p>Período: {{ \Carbon\Carbon::parse($dataInicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($dataFim)->format('d/m/Y') }}</p>
     <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>    
+    <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
     @if($entradas->count() > 0)
     <table>
         <thead>

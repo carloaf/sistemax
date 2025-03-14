@@ -84,8 +84,9 @@ class RelatorioController extends Controller
         ]);
     }
 
-    public function entradaPdf(Request $request)
+    public function pdf(Request $request)
     {
+
         try {
             $request->validate([
                 'data_inicio' => 'required|date',
@@ -115,6 +116,7 @@ class RelatorioController extends Controller
             logger()->error('Erro ao gerar PDF: ' . $e->getMessage());
             return back()->withErrors('Erro ao gerar PDF: ' . $e->getMessage());
         }
+    }
 
     public function pdf(Request $request)
     {
