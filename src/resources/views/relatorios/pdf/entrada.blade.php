@@ -23,6 +23,7 @@
 </head>
 <body>
     <h1>Relatório de Entrada de Materiais</h1>
+    <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
     <p>Período: {{ \Carbon\Carbon::parse($dataInicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($dataFim)->format('d/m/Y') }}</p>
     <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>    
     <p>Período: {{ \Carbon\Carbon::parse($data_inicio)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($data_fim)->format('d/m/Y') }}</p>
