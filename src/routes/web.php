@@ -40,8 +40,7 @@ Route::prefix('relatorios')->group(function () {
     Route::get('/estoque', [RelatorioController::class, 'estoque'])->name('relatorios.estoque');
     Route::get('/relatorios/estoque/{material}/movimentacoes', [RelatorioController::class, 'movimentacoesMaterial'])
         ->name('relatorios.estoque.movimentacoes');
-    Route::get('/relatorios/entrada/pdf', [RelatorioController::class, 'entradaPdf'])
-        ->name('relatorios.entrada.pdf');
+    Route::get('/entrada/pdf', [RelatorioController::class, 'pdf'])->name('relatorios.entrada.pdf');
 });
 
 Route::middleware('auth')->group(function () {
